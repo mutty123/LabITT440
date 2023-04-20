@@ -28,7 +28,7 @@ int main ()
           exit (1);
        }
 
-//Q1 - forking into multiple child passing mesage from parent
+//Q1 - forking into multiple child passing mesage from parent using pipe
     for(int i = 0; i < 2; i++)
         { 
           int fd_child[2];  //creates seperate pipe for child.
@@ -47,7 +47,7 @@ int main ()
              close (fd[1]);
              close (fd_child[1]);
              read(fd_child[0], buffer,sizeof(buffer));
-             printf("\nThe child %d message you entered is : %s\n",i+1, buffer);
+             printf("\nThe child %d with parent id %d message you entered is : %s\n",i+1,getppid(), buffer);
              close(fd_child[0]);
              close(fd[0]);
              exit(0);
@@ -58,7 +58,7 @@ int main ()
          else if (pid[i] > 0) //parent process
             {
               close(fd[0]);
-              printf ("Enter a message for child %d :", i+1);
+              printf ("\n(PID : %d) Enter a message for child %d :", getpid(), i+1);
               fgets(buffer,sizeof (buffer),stdin);
               write (fd_child[1], buffer, strlen(buffer)+1); 
               close (fd_child[1]);
