@@ -65,7 +65,6 @@ user_input = input('Pressure value (bar) : ')
 
 #Send input to the server
 client_socket.sendall(user_input.encode('utf-8'))
-print('Value sent to the server.')
 
 #Print incoming reply string from server
 server_text = client_socket.recv(1024).decode('utf-8')
