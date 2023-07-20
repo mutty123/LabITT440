@@ -1,4 +1,4 @@
-server 
+SERVER
 import socket
 import threading
 import random
