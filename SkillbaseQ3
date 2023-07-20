@@ -1,7 +1,6 @@
 a) server 
 
 import socket
-
 def bar_to_atm(pressure_bar):
     return pressure_bar * 0.986923
 
@@ -18,7 +17,7 @@ def main():
     while True:
         client_socket, client_address = server_socket.accept()
 
-        # Receive pressure in bar from the client
+        # Receiving pressure in bar from client
         data = client_socket.recv(1024).decode()
         try:
             pressure_bar = float(data)
@@ -27,10 +26,10 @@ def main():
             client_socket.close()
             continue
 
-        # Convert pressure to atm
+        #Converting pressure to atm
         pressure_atm = bar_to_atm(pressure_bar)
 
-        # Send the converted pressure back to the client
+        # Send conversion pressure back to the client
         client_socket.sendall(str(pressure_atm).encode())
 
         client_socket.close()
@@ -39,38 +38,37 @@ def main():
 if __name__ == "__main__":
     main()
 
+
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 b) client 
 import socket
 host = '192.168.182.140'
 port = 8888
-
 print('Waiting for connection')
-
-#establishing socket connection to server
+#establishing socket connection
 client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
 server_address = (host, port)
 
-# Connecting to the server
+#Connecting to the server
 try:
     client_socket.connect(server_address)
 except socket.error as e:
     print(str(e))
     exit()
 
-#get users input
+#receiving users input
 user_input = input('Pressure value (bar) : ')
 
-#Send input to the server
+#Send user-input bar value to the server
 client_socket.sendall(user_input.encode('utf-8'))
 
-#Print incoming reply string from server
+#display conversion from server 
 server_text = client_socket.recv(1024).decode('utf-8')
 print('Bar to atm convertion :', server_text , ' atm')
 
-#Close the client socket
+#Close socket
 client_socket.close()
 
 
