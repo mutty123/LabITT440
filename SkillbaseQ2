@@ -86,20 +86,19 @@ int main() {
         exit(EXIT_FAILURE);
     }
 
-    // Initialize server address structure
     memset(&server_addr, 0, sizeof(server_addr));
     server_addr.sin_family = AF_INET;
     server_addr.sin_addr.s_addr = inet_addr(ip_server);
     server_addr.sin_port = htons(port_server);
 
-    // Connect to the server
+    // Connecting to server
     if (connect(client_socket, (struct sockaddr*)&server_addr, sizeof(server_addr)) < 0) {
         perror("Connect failed");
         close(client_socket);
         exit(EXIT_FAILURE);
     }
 
-    // Receive the random number from the server
+    // Receiving random number from server
     recv(client_socket, &random_number, sizeof(random_number), 0);
 
     printf("Random number from server: %d\n", random_number);
