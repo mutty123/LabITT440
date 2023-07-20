@@ -1,0 +1,36 @@
+import socket
+
+print('Waiting for connection')
+
+#connect to izani.synology.me @ 8443
+host = input('Enter host IP address : ' )
+port = int(input('Enter host port number: '))
+
+#establishing socket connection to server
+client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+
+#set up server address and port
+server_address = (host, port)
+
+# Connecting to the server
+try:
+    client_socket.connect(server_address)
+except socket.error as e:
+    print(str(e))
+    exit()
+
+#entering student id
+user_input = input('Enter student ID: ')
+
+#Send input to the server
+client_socket.sendall(user_input.encode('utf-8'))
+print('Text sent to the server.')
+
+#Print incoming reply string from server
+server_text = client_socket.recv(1024).decode('utf-8')
+print('text received from the server:', server_text)
+
+#Close the client socket
+client_socket.close()
+
+
