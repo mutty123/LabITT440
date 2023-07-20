@@ -1,1 +1,73 @@
+server 
+import socket
+import threading
+import random
+
+# List of quotes
+quotes = [
+    "Nothing is impossible",
+    "Know that whatever you're going through, it is all temporary",
+    "In three words I can sum up everything I've learned about life: it goes on. - Robert Frost",
+    "Don't cry because it's over, smile because it happened.",
+    "To be yourself in a world that is constantly trying to make you something else is the greatest accomplishment. - Ralph Waldo Emerson",
+    "Success is not final, failure is not fatal: It is the courage to continue that counts",
+    "Be the change, you wish to see"
+]
+
+def handle_client(client_socket):
+    # Send a random quote to the client
+    quote = random.choice(quotes)
+    client_socket.sendall(quote.encode())
+
+    # Close the client socket
+    client_socket.close()
+
+def main():
+    host = "192.168.182.140"
+    port = 8888
+
+    server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    server_socket.bind((host, port))
+    server_socket.listen(5)
+
+    print("Server is listening for incoming connections...")
+
+    while True:
+        client_socket, client_address = server_socket.accept()
+        print(f"Connected to {client_address}")
+
+        # Create a new thread to handle the client
+        client_thread = threading.Thread(target=handle_client, args=(client_socket,))
+        client_thread.start()
+
+if __name__ == "__main__":
+    main()
+
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
+CLIENT 
+import socket
+
+def main():
+    host = "192.168.182.140"
+    port = 8888
+
+    client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    client_socket.connect((host, port))
+
+    # Receive the quote from the server
+    quote = client_socket.recv(1024).decode()
+
+    print("Quote of the Day:")
+    print(quote)
+
+    # Close the client socket
+    client_socket.close()
+
+if __name__ == "__main__":
+    main()
+
+
+
+
 
